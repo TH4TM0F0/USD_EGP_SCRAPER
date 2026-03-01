@@ -71,5 +71,7 @@ def main():
     except requests.RequestException as error:
         print(f'Error: {error}')
 
+    email_sender.send_email("Exchange Rate Updated" , "0")
+
 if __name__ == '__main__':
     main()

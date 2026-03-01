@@ -1,7 +1,5 @@
 import requests
-import re
 from bs4 import BeautifulSoup
-import csv
 import os
 from datetime import datetime, timezone, timedelta
 
@@ -15,7 +13,7 @@ tz = timezone(timedelta(hours=2))
 
 url = "https://wise.com/us/currency-converter/usd-to-egp-rate"
 
-def save_to_csv(data : dict) -> bool:
+def save_to_csv(data : dict):
     os.makedirs(DATA_DIR , exist_ok = True)
     data_path = os.path.join(DATA_DIR , CSV_DIR)
     file_exists_flag = os.path.exists(data_path)
@@ -28,6 +26,13 @@ def save_to_csv(data : dict) -> bool:
         f.write(',')
         f.write(data['rate'])
         f.write('\n')
+
+
+def save_metadata(metadata : dict):
+    os.makedirs(UTILS_DIR , exist_ok = True)
+    metadata_path = os.path.join(UTILS_DIR , TXT_DIR)
+    with open(file = metadata_path , mode = 'w') as f:
+        f.write(f"Latest Price: {metadata['rate']}")
 
 def main():
     try:
@@ -58,6 +63,7 @@ def main():
                 'rate' : rate
                 }
             save_to_csv(data_frame)
+            save_metadata(data_frame)
             break
 
     except requests.RequestException as error:

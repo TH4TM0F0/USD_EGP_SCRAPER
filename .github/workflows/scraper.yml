@@ -25,6 +25,10 @@ jobs:
         run: pip install requests beautifulsoup4
 
       - name: Run scraper
+        env:
+          EMAIL_SENDER: ${{ secrets.SMTP_AUTH_EMAIL }}
+          EMAIL_PASSWORD: ${{ secrets.SMTP_AUTH_PASS }}
+          EMAIL_RECEIVER: ${{ secrets.SMTP_RECV_EMAIL }}
         run: python src/scraper.py
 
       - name: Commit and push data

@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import os
 from datetime import datetime, timezone, timedelta
+import email_module.email_sender as email_sender
 
 DATA_DIR = 'data'
 CSV_DIR = 'exchange_rate.csv'
@@ -60,6 +61,9 @@ def main():
                 'timestamp' : datetime.now(tz).strftime('%Y-%m-%d %H:%M:%S %Z') ,
                 'rate' : rate
                 }
+            previous_price = open(os.path.join(UTILS_DIR , TXT_DIR)).read().split(': ')[1] if os.path.exists(os.path.join(UTILS_DIR , TXT_DIR)) else '0'
+            if email_sender.need_to_send_email(data_frame['rate'] , previous_price):
+                email_sender.send_email("Exchange Rate Updated" , data_frame['rate'])
             save_to_csv(data_frame)
             save_metadata(data_frame)
             break

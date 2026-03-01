@@ -27,7 +27,6 @@ def save_to_csv(data : dict):
         f.write(data['rate'])
         f.write('\n')
 
-
 def save_metadata(metadata : dict):
     os.makedirs(UTILS_DIR , exist_ok = True)
     metadata_path = os.path.join(UTILS_DIR , TXT_DIR)
@@ -57,7 +56,6 @@ def main():
             except ValueError:
                 continue
 
-            print(rate)
             data_frame = {
                 'timestamp' : datetime.now(tz).strftime('%Y-%m-%d %H:%M:%S %Z') ,
                 'rate' : rate
